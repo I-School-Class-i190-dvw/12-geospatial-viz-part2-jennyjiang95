@@ -9,6 +9,16 @@
   <!-- load the d3 library locally -->
   <!-- we could load the non-minified version, plain old "d3.js", for debugging purposes instead if desired -->
   <script src="./lib/d3.min.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+  <script src="https://d3js.org/topojson.v2.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.24.0/d3-legend.js"></script>
+<!--   <script src="https://unpkg.com/d3-array@1.0"></script>
+  <script src="https://unpkg.com/d3-tile@0.0"></script>
+  <script>
+
+  var tile = d3.tile();
+
+  </script> -->
 
   <!-- Our CSS goes within the <style> tag -->
   <!-- Like JS, we could also link to an external CSS file using the <link /> tag -->
@@ -19,6 +29,16 @@
       padding: 0;
       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
+
+    .legend rect {
+      stroke: #999;
+      stroke-width: 0.7px;
+    }
+
+    .legend text {
+      font-family: sans-serif;
+      font-size: 11px;
+    }
   </style>
 
 </head>
@@ -26,4 +46,5 @@
 <!-- all visible HTML goes within the <body> tag -->
 <body>
   <!-- TO DO: add script tags for your main.js file -->
+  <script src="main.js"></script>
 </body>
