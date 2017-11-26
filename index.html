@@ -9,9 +9,7 @@
   <!-- load the d3 library locally -->
   <!-- we could load the non-minified version, plain old "d3.js", for debugging purposes instead if desired -->
   <script src="./lib/d3.min.js"></script>
-  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
-  <script src="https://d3js.org/topojson.v2.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.24.0/d3-legend.js"></script>
+   <script src="//d3js.org/d3-tile.v0.0.min.js"></script>
 <!--   <script src="https://unpkg.com/d3-array@1.0"></script>
   <script src="https://unpkg.com/d3-tile@0.0"></script>
   <script>
@@ -30,15 +28,17 @@
       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     }
 
-    .legend rect {
-      stroke: #999;
-      stroke-width: 0.7px;
+    path {
+      fill: red;
+      stroke: none;
+      fill-opacity: 0.6;
+      stroke-linejoin: round;
     }
-
-    .legend text {
-      font-family: sans-serif;
-      font-size: 11px;
+    
+    path:hover {
+      fill-opacity: 1;
     }
+    
   </style>
 
 </head>

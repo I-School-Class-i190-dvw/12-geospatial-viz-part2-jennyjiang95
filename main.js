@@ -47,6 +47,7 @@ var zoom = d3.zoom()
 
 var radius = d3.scaleSqrt().range([0, 10]);   //radius from 0 to 10. 
 
+// define the svg
 var svg = d3.select('body')
 	.append('svg')
 	.attr('width', width)
@@ -57,8 +58,12 @@ var raster = svg.append('g');
 
 // // create a vector
 // var vector = svg.append('path');  // draw a single path
-
+// in this way, we can render multiple paths, instead of a single path!!! 
+// the differences between append and selectall.
 var vector = svg.selectAll('path');
+
+
+
 
 
 
@@ -67,11 +72,14 @@ var vector = svg.selectAll('path');
 d3.json('data/CA_Earthquake.geojson', function(error, geojson) {
 	if (error) throw error;
 
+	//check if the data load correctly!
 	console.log(geojson);
 
+	// define the radius domain
+	radius.domain([0, d3.max(geojson.features, 
+				function(d) { return d.properties.mag; })]);
 
-	radius.domain([0, d3.max(geojson.features, function(d) { return d.properties.mag; })]);
-
+	// define the path point radius using the d.properties.mag
 	path.pointRadius(function (d) {
 		return radius(d.properties.mag);
 	});
@@ -85,7 +93,7 @@ d3.json('data/CA_Earthquake.geojson', function(error, geojson) {
 		.attr('d', path)
 		.on('mouseover', function(d) { console.log(d); });
 
-	//arbitruary projection 
+	//arbitruary projection , this is roughly where california is. 
 	var center = projection([-119.665, 37.414]);
 
 	// svg call, transform event.
@@ -116,8 +124,7 @@ function zoomed () {
 		.scale(transform.k / tau)
 		.translate([transform.x, transform.y]);
 
-	vector
-		.attr('d', path);
+	vector.attr('d', path);
 
 	var image = raster
 		.attr('transform', stringify(tiles.scale, tiles.translate))
@@ -128,16 +135,17 @@ function zoomed () {
 
 	image.exit().remove();
 
-	image.enter().append('image')
-		.attr('xlink:href', function(d) {
-			return 'http://' + 'abc'[d[1] % 3] + '.basemaps.cartocdn.com/rastertiles/voyager' +
-				d[2] + '/' + d[0] + '/' + d[1] + '.png';
-		})
-		.attr('x', function(d) { return d[0] * 256; }) //256: the size of our tiles
-		.attr('y', function(d) { return d[1] * 256; })
-		.attr('width', 256)
-		.attr('height', 256);
+	// this one is tricky! basically, what this is doing is to get the basemap!
 
+	  image.enter().append('image')
+	    .attr('xlink:href', function(d) {
+	      return 'http://' + 'abc'[d[1] % 3] + '.basemaps.cartocdn.com/rastertiles/voyager/' +
+	        d[2] + "/" + d[0] + "/" + d[1] + ".png";
+	    })
+	    .attr('x', function(d) { return d[0] * 256; }) //256: the size of our tiles
+	    .attr('y', function(d) { return d[1] * 256; })
+	    .attr('width', 256)
+	    .attr('height', 256);
 
 
 
@@ -145,11 +153,15 @@ function zoomed () {
 };  //////////////end of zoomed function
 
 
+//everything within {} gets interpreted by 
+
+
 function stringify(scale, translate) {
-	var k = scale / 256,
-		r = scale % 1 ? Number : Math.round; 
-	return `translate(${r(translate[0] * scale)}, ${r(translate[1] * scale)}) scale(${k})`   //everything within {} gets interpreted by 
-};
+  var k = scale / 256,
+      r = scale % 1 ? Number : Math.round;
+  return "translate(" + r(translate[0] * scale) 
+  					+ "," + r(translate[1] * scale) + ") scale(" + k + ")";
+}
 
 
 
